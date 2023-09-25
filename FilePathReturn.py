@@ -3,7 +3,7 @@ import os
 
 def get_excel_file_path():
     # Replace 'your_excel_file.xlsx' with the actual name of your Excel file
-    excel_filename = 'sampleFile.xlsx'
+    excel_filename = 'SampleStudentRecord.xlsx'
 
     # Get the absolute path to the current working directory
     current_directory = os.getcwd()
@@ -17,5 +17,5 @@ def get_excel_file_path():
 excel_path = get_excel_file_path()
 
 # Read the Excel file into a DataFrame
-df = pd.read_excel(excel_path)
+#df = pd.read_excel(excel_path)
 #print(df.head())
