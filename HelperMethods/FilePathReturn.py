@@ -19,3 +19,12 @@ excel_path = get_excel_file_path()
 # Read the Excel file into a DataFrame
 #df = pd.read_excel(excel_path)
 #print(df.head())
+
+excel_file = pd.read_excel(excel_path, sheet_name=None)
+#for sheet_name, df_data in excel_file.items():
+    #print('Loading worksheet {sheet_name}...')
+    
+
+    # {'fail', 'replace', 'append'}
+#df_data.to_sql(TABLE_NAME, enigne, if_exists='append', index=False)
+
