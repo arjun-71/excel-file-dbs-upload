@@ -5,21 +5,38 @@ import HelperMethods.FilePathReturn as  fp
 import numpy as np
 import HelperMethods.DatabaseString as dbs
 import HelperMethods.ExcelToCsv as converter
-
+import HelperMethods.csv_name_changer as nameChanger
 
 # Replace {key} with your actual database connection details
 databaseConnectionString = dbs.db_url
 engine = create_engine(databaseConnectionString)    #set database string 
 
-output_csv_file = 'output_csv_file.csv'
-
 #extracting the file path
-filePath = fp.get_excel_file_path()
+filePath = fp.get_excel_file_path("sample_construction_file_1.xlsx")
 print(filePath)
 
 #converting excel file to csv file
 csv = converter.fileConverter(filePath)             
-print(csv.head())
+
+first_row = csv.iloc[0]
+first_column = csv.iloc[:, 0]
+
+#the following variable contains the name mentioned in the file
+name_in_the_file =first_column.iloc[0] 
+name_of_the_project = csv.columns[3]
+project_code = csv.columns[0]
+
+# Generate a new CSV file name without spaces
+new_csv_file_name = nameChanger.return_Csv_File_Name(name_of_the_project, project_code)
+
+# Save the DataFrame to the new CSV file
+csv.to_csv(new_csv_file_name, index=False)
+
+# Read and print the first few rows of the new CSV file
+new_csv_data = pd.read_csv(new_csv_file_name)
+print(new_csv_file_name)
+print(new_csv_data.head())
+
 
 # def extract_and_insert_single_sheet(sheet_name, excel_file, table_name):
 #     df = pd.read_excel(excel_file, sheet_name)
