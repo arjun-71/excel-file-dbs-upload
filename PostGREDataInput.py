@@ -35,7 +35,42 @@ csv.to_csv(new_csv_file_name, index=False)
 # Read and print the first few rows of the new CSV file
 new_csv_data = pd.read_csv(new_csv_file_name)
 print(new_csv_file_name)
-print(new_csv_data.head())
+
+# Loop through every row and print the value of every column field 
+
+field_List = []
+for index, row in new_csv_data.iterrows():
+    print(f"Row {index}:")
+    if index == 0 :
+        
+        for column_name, value in row.items():
+            print(f"  {column_name}: {value}")
+            field_List.append(value)
+    elif index == 1:
+        for column_name, value in row.items():
+            print(f"  {column_name}: {value}")
+    else:
+        break
+
+print(field_List)  #the following list contains the list of all major fields.
+
+# Creating a nested dictionary
+nested_dict = {
+    'Land Acquisition': {
+        'Land Acquisition':{
+            'inner_key1': 'value1',
+            'inner_key2': 'value2'
+    },
+    'outer_key2': {
+        'inner_key3': 'value3',
+        'inner_key4': 'value4'
+    }
+}
+}
+
+
+
+#creating a dictionary data structure for storing  values 
 
 
 # def extract_and_insert_single_sheet(sheet_name, excel_file, table_name):
