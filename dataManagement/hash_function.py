@@ -281,9 +281,3 @@ nested_dict = {
 
 }
 }
-
-
-
-
-print("hello world")
-print(nested_dict['Polytechnic Zoom Classrooms & Space Upgrades']['Add Univ Costs']['Printing/Advertisement/Misc Admin']['At Construction Budget'])

@@ -6,10 +6,16 @@ import numpy as np
 import HelperMethods.DatabaseString as dbs
 import HelperMethods.ExcelToCsv as converter
 import HelperMethods.csv_name_changer as nameChanger
+import dataManagement.hash_function
+import dataManagement.dataBody as dsn 
+import dataManagement.dataBody
 
 # Replace {key} with your actual database connection details
 databaseConnectionString = dbs.db_url
 engine = create_engine(databaseConnectionString)    #set database string 
+
+budgetData = dataManagement.dataBody.BudgetData()
+
 
 #extracting the file path
 filePath = fp.get_excel_file_path("sample_construction_file_1.xlsx")
@@ -34,41 +40,53 @@ csv.to_csv(new_csv_file_name, index=False)
 
 # Read and print the first few rows of the new CSV file
 new_csv_data = pd.read_csv(new_csv_file_name)
-print(new_csv_file_name)
+
 
 # Loop through every row and print the value of every column field 
 
 field_List = []
 for index, row in new_csv_data.iterrows():
-    print(f"Row {index}:")
+    #print(f"Row {index}:")
     if index == 0 :
         
         for column_name, value in row.items():
-            print(f"  {column_name}: {value}")
+            
             field_List.append(value)
-    elif index == 1:
-        for column_name, value in row.items():
-            print(f"  {column_name}: {value}")
+    
+           
     else:
         break
 
-print(field_List)  #the following list contains the list of all major fields.
-
-# Creating a nested dictionary
-nested_dict = {
-    'Land Acquisition': {
-        'Land Acquisition':{
-            'inner_key1': 'value1',
-            'inner_key2': 'value2'
-    },
-    'outer_key2': {
-        'inner_key3': 'value3',
-        'inner_key4': 'value4'
-    }
-}
-}
+key_one = ""
+#print(field_List)
 
 
+
+for index, row in new_csv_data.iterrows():
+    print(f"Row {index}:")
+
+    for column_name, value in row.items():
+        if index == 0 and value == "Current Budget":
+            project_name = column_name
+            print(project_name)             #the following contains the project name of the sheet
+        if column_name == "Unnamed: 1" and value != "0" and pd.notna(value) and  index >1:
+            section_value = value
+            #print(section_value) the following contains the section value input file
+            
+        if pd.notna(value):
+
+            #print(f" '{column_name}': {value}")
+            column_field_value = budgetData.replace_value(column_name)
+            print(f" '{column_field_value}': {value}")
+
+            
+            #use the insert function here please
+
+
+                
+#print(field_List)  #the following list contains the list of all major fields for the above costs  
+
+ 
 
 #creating a dictionary data structure for storing  values 
 

@@ -1,5 +1,6 @@
-class BudgetData:
+class BudgetData: #the following class declaration contains budget object type functionalities.
     def __init__(self):
+        
         self.data = {
            'Polytechnic Zoom Classrooms & Space Upgrades':{
     'Land Acquisition': {
@@ -301,15 +302,36 @@ class BudgetData:
                 return False  # Key not found
         current_dict[path[-1]] = value
         return True
+        
+    def replace_value(self,input_string):
+    # Using if-elif statements to mimic a switch-like block
+        if input_string == 'Unnamed: 5':
+                return 'Encumbered'
+        elif input_string == 'Unnamed: 7':
+                return 'Expensed'
+        elif input_string == 'Unnamed: 9':
+                return 'Anticipated Costs'
+        elif input_string == 'Unnamed: 11':
+                return 'Uncommitted Budget'
+        elif input_string == 'Unnamed: 12':
+                return 'Func Code'
+        else:
+                return input_string  # Return the original string if no match is found
+
+# Example usage:
+original_value = 'Encumbered'
+
+
+
 
 # Create an instance of the BudgetData class
 budget_data = BudgetData()
 
 # Accessing a specific value in the nested dictionary:
-value = budget_data.get_value(['Polytechnic Zoom Classrooms & Space Upgrades', 'Land Acquisition', 'Land Acquisition', 'At Construction Budget'])
+#value = budget_data.get_value(['Polytechnic Zoom Classrooms & Space Upgrades', 'Land Acquisition', 'Land Acquisition', 'At Construction Budget'])
 
-print(value)  # This will print 'value1'
+#rint(value)  # This will print 'value1'
 
 # Modifying a value in the nested dictionary:
-budget_data.set_value(['Polytechnic Zoom Classrooms & Space Upgrades', 'Land Acquisition', 'Land Acquisition', 'At Construction Budget'], '4182')
-print(budget_data.get_value(['Polytechnic Zoom Classrooms & Space Upgrades', 'Land Acquisition', 'Land Acquisition', 'At Construction Budget']))  # This will print 'new_value'
+#budget_data.set_value(['Polytechnic Zoom Classrooms & Space Upgrades', 'Land Acquisition', 'Land Acquisition', 'At Construction Budget'], '4182')
+#print(budget_data.get_value(['Polytechnic Zoom Classrooms & Space Upgrades', 'Land Acquisition', 'Land Acquisition', 'At Construction Budget']))  # This will print 'new_value'
