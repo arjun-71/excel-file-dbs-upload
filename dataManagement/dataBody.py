@@ -305,7 +305,11 @@ class BudgetData: #the following class declaration contains budget object type f
         
     def replace_value(self,input_string):
     # Using if-elif statements to mimic a switch-like block
-        if input_string == 'Unnamed: 5':
+        if input_string == 'Unnamed: 1':
+                return 'At Construction Budget'
+        elif input_string == 'Polytechnic Zoom Classrooms & Space Upgrades':
+                return 'Current Budget'
+        elif input_string == 'Unnamed: 5':
                 return 'Encumbered'
         elif input_string == 'Unnamed: 7':
                 return 'Expensed'

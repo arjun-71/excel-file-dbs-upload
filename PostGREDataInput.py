@@ -66,7 +66,7 @@ project_code_value = ""
 
 
 for index, row in new_csv_data.iterrows():
-    print(f"Row {index}:")
+    #print(f"Row {index}:")
     project_code_value = csv.columns[0]                 #the following stores the value of the project code
     
     for column_name, value in row.items():
@@ -76,18 +76,27 @@ for index, row in new_csv_data.iterrows():
         if column_name == "Unnamed: 1" and value != "0" and pd.notna(value) and  index >1:
             section_value = value
             #print(section_value) the following contains the section value input file
+        
             
-        if pd.notna(value) and index>3 and index<9:
+        if pd.notna(value) and index>3 and index < 38:
 
             #print(f" '{column_name}': {value}")
             column_field_value = budgetData.replace_value(column_name)
             if column_name == project_code_value:
                 sub_section_value = value
-            budgetData.set_value([project_name,section_value,sub_section_value,column_field_value],value)
-            #print(budgetData.get_value([project_name,section_value,sub_section_value,column_field_value]))
-            print(project_name,section_value,sub_section_value,column_field_value)
-            print(f":  {value}")
+            if column_field_value == 'Encumbered' or column_field_value == 'Expensed' or column_field_value ==  'Anticipated Costs' or column_field_value == 'Uncommitted Budget' or column_field_value == 'Current Budget' or column_field_value ==  'At Construction Budget' and sub_section_value.find("Subtotal") == -1 :
+                budgetData.set_value([project_name,section_value,sub_section_value,column_field_value],value)
+                if(budgetData.get_value([project_name,section_value,sub_section_value,column_field_value])!= None):
+                    print()
+                    print("the value stored in the system is")
+                    print(budgetData.get_value([project_name,section_value,sub_section_value,column_field_value]))
 
+                #print(budgetData.get_value([project_name,section_value,sub_section_value,column_field_value]))
+                #print(project_name,section_value,sub_section_value,column_field_value)
+                #print(f":  {value}")
+#Polytechnic Zoom Classrooms & Space Upgrades Construction Costs Subtotal Construction Cost Expensed
+print(budgetData.get_value(['Polytechnic Zoom Classrooms & Space Upgrades','Construction Costs','Renovation']))
+#print (budgetData['Polytechnic Zoom Classrooms & Space Upgrades']['Construction Costs']['Renovation'])
             
             #use the insert function here please
 #print(project_code_value)
