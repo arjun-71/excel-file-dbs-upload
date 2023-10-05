@@ -59,29 +59,40 @@ for index, row in new_csv_data.iterrows():
 
 key_one = ""
 #print(field_List)
-
+project_name = ""
+section_value = ""
+sub_section_value = ""  #find the value of this
+project_code_value = ""
 
 
 for index, row in new_csv_data.iterrows():
     print(f"Row {index}:")
-
+    project_code_value = csv.columns[0]                 #the following stores the value of the project code
+    
     for column_name, value in row.items():
         if index == 0 and value == "Current Budget":
             project_name = column_name
-            print(project_name)             #the following contains the project name of the sheet
+            #print(project_name)             #the following contains the project name of the sheet
         if column_name == "Unnamed: 1" and value != "0" and pd.notna(value) and  index >1:
             section_value = value
             #print(section_value) the following contains the section value input file
             
-        if pd.notna(value):
+        if pd.notna(value) and index>3 and index<9:
 
             #print(f" '{column_name}': {value}")
             column_field_value = budgetData.replace_value(column_name)
-            print(f" '{column_field_value}': {value}")
+            if column_name == project_code_value:
+                sub_section_value = value
+            budgetData.set_value([project_name,section_value,sub_section_value,column_field_value],value)
+            #print(budgetData.get_value([project_name,section_value,sub_section_value,column_field_value]))
+            print(project_name,section_value,sub_section_value,column_field_value)
+            print(f":  {value}")
 
             
             #use the insert function here please
-
+#print(project_code_value)
+#print(budgetData.get_value(['Polytechnic Zoom Classrooms & Space Upgrades']))
+#print(budgetData.get_value(['Polytechnic Zoom Classrooms & Space Upgrades', 'Land Acquisition', 'Land Acquisition', 'At Construction Budget']))  # This will print 'new_value'
 
                 
 #print(field_List)  #the following list contains the list of all major fields for the above costs  
