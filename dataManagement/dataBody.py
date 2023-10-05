@@ -5,8 +5,8 @@ class BudgetData: #the following class declaration contains budget object type f
            'Polytechnic Zoom Classrooms & Space Upgrades':{
     'Land Acquisition': {
         'Land Acquisition':{
-            'At Construction Budget': 'value1',
-            'Current Budget': 'value2',
+            'At Construction Budget': '',
+            'Current Budget': '',
             'Encumbered': '',
             'Expensed':'',
             'Anticipated Costs':'',
