@@ -16,10 +16,11 @@ engine = create_engine(databaseConnectionString)    #set database string
 
 budgetData = dataManagement.dataBody.BudgetData()
 
+# Create a list to store BudgetData objects
+budget_data_list = []        #declare this as global variable        
 
 #extracting the file path
 filePath = fp.get_excel_file_path("sample_construction_file_1.xlsx")
-print(filePath)
 
 #converting excel file to csv file
 csv = converter.fileConverter(filePath)             
@@ -86,16 +87,17 @@ for index, row in new_csv_data.iterrows():
                 sub_section_value = value
             if column_field_value == 'Encumbered' or column_field_value == 'Expensed' or column_field_value ==  'Anticipated Costs' or column_field_value == 'Uncommitted Budget' or column_field_value == 'Current Budget' or column_field_value ==  'At Construction Budget' and sub_section_value.find("Subtotal") == -1 :
                 budgetData.set_value([project_name,section_value,sub_section_value,column_field_value],value)
-                if(budgetData.get_value([project_name,section_value,sub_section_value,column_field_value])!= None):
-                    print()
-                    print("the value stored in the system is")
-                    print(budgetData.get_value([project_name,section_value,sub_section_value,column_field_value]))
-
+                #if(budgetData.get_value([project_name,section_value,sub_section_value,column_field_value])!= None):
+                    #print()
+                    #print("the value stored in the system is")
+                    #print(budgetData.get_value([project_name,section_value,sub_section_value,column_field_value]))
+                    
                 #print(budgetData.get_value([project_name,section_value,sub_section_value,column_field_value]))
                 #print(project_name,section_value,sub_section_value,column_field_value)
                 #print(f":  {value}")
 #Polytechnic Zoom Classrooms & Space Upgrades Construction Costs Subtotal Construction Cost Expensed
-print(budgetData.get_value(['Polytechnic Zoom Classrooms & Space Upgrades','Construction Costs','Renovation']))
+budget_data_list.append(budgetData)
+print(budget_data_list[0].get_value(['Polytechnic Zoom Classrooms & Space Upgrades','Construction Costs','Renovation']))
 #print (budgetData['Polytechnic Zoom Classrooms & Space Upgrades']['Construction Costs']['Renovation'])
             
             #use the insert function here please
