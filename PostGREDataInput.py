@@ -9,12 +9,14 @@ import HelperMethods.csv_name_changer as nameChanger
 import dataManagement.hash_function
 import dataManagement.dataBody as dsn 
 import dataManagement.dataBody
+import HelperMethods.InformationToObject as objectInserter
 
 # Replace {key} with your actual database connection details
 databaseConnectionString = dbs.db_url
-engine = create_engine(databaseConnectionString)    #set database string 
+engine = create_engine(databaseConnectionString)   
 
-budgetData = dataManagement.dataBody.BudgetData()
+#create a dictionary with the new csv file name as the key value and the corresponding budgetData created as the value pair
+file_budget_mapping = {}
 
 # Create a list to store BudgetData objects
 budget_data_list = []        #declare this as global variable        
@@ -35,6 +37,7 @@ project_code = csv.columns[0]
 
 # Generate a new CSV file name without spaces
 new_csv_file_name = nameChanger.return_Csv_File_Name(name_of_the_project, project_code)
+print(new_csv_file_name)
 
 # Save the DataFrame to the new CSV file
 csv.to_csv(new_csv_file_name, index=False)
@@ -42,62 +45,19 @@ csv.to_csv(new_csv_file_name, index=False)
 # Read and print the first few rows of the new CSV file
 new_csv_data = pd.read_csv(new_csv_file_name)
 
-
-# Loop through every row and print the value of every column field 
-
-field_List = []
-for index, row in new_csv_data.iterrows():
-    #print(f"Row {index}:")
-    if index == 0 :
-        
-        for column_name, value in row.items():
-            
-            field_List.append(value)
-    
-           
-    else:
-        break
-
-key_one = ""
-#print(field_List)
-project_name = ""
-section_value = ""
-sub_section_value = ""  #find the value of this
-project_code_value = ""
+# the following object created contains the lew object of type cost 
+budgetData = objectInserter.process_csv_data(new_csv_data)   
 
 
-for index, row in new_csv_data.iterrows():
-    #print(f"Row {index}:")
-    project_code_value = csv.columns[0]                 #the following stores the value of the project code
-    
-    for column_name, value in row.items():
-        if index == 0 and value == "Current Budget":
-            project_name = column_name
-            #print(project_name)             #the following contains the project name of the sheet
-        if column_name == "Unnamed: 1" and value != "0" and pd.notna(value) and  index >1:
-            section_value = value
-            #print(section_value) the following contains the section value input file
-        
-            
-        if pd.notna(value) and index>3 and index < 38:
-
-            #print(f" '{column_name}': {value}")
-            column_field_value = budgetData.replace_value(column_name)
-            if column_name == project_code_value:
-                sub_section_value = value
-            if column_field_value == 'Encumbered' or column_field_value == 'Expensed' or column_field_value ==  'Anticipated Costs' or column_field_value == 'Uncommitted Budget' or column_field_value == 'Current Budget' or column_field_value ==  'At Construction Budget' and sub_section_value.find("Subtotal") == -1 :
-                budgetData.set_value([project_name,section_value,sub_section_value,column_field_value],value)
-                #if(budgetData.get_value([project_name,section_value,sub_section_value,column_field_value])!= None):
-                    #print()
-                    #print("the value stored in the system is")
-                    #print(budgetData.get_value([project_name,section_value,sub_section_value,column_field_value]))
-                    
-                #print(budgetData.get_value([project_name,section_value,sub_section_value,column_field_value]))
-                #print(project_name,section_value,sub_section_value,column_field_value)
-                #print(f":  {value}")
-#Polytechnic Zoom Classrooms & Space Upgrades Construction Costs Subtotal Construction Cost Expensed
+#the following adds and maps the new object created and maps it to the required file name
 budget_data_list.append(budgetData)
+file_budget_mapping[new_csv_file_name] = budgetData     
 print(budget_data_list[0].get_value(['Polytechnic Zoom Classrooms & Space Upgrades','Construction Costs','Renovation']))
+for fileName, budgetData in file_budget_mapping.items():
+     print(f"File Name: {fileName}")
+     print(f"budget data {budgetData.get_value(['Polytechnic Zoom Classrooms & Space Upgrades','Construction Costs'])}")
+
+
 #print (budgetData['Polytechnic Zoom Classrooms & Space Upgrades']['Construction Costs']['Renovation'])
             
             #use the insert function here please
