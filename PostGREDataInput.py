@@ -10,6 +10,7 @@ import dataManagement.hash_function
 import dataManagement.dataBody as dsn 
 import dataManagement.dataBody
 import HelperMethods.InformationToObject as objectInserter
+import HelperMethods.header2 as hds     
 
 # Replace {key} with your actual database connection details
 databaseConnectionString = dbs.db_url
@@ -19,12 +20,29 @@ engine = create_engine(databaseConnectionString)
 file_budget_mapping = {}
 
 # Create a list to store BudgetData objects
-budget_data_list = []        #declare this as global variable        
+budget_data_list = []        #declare this as global variable     
+
+
+
+#name of the resultant csv file
+resultant_file = 'resultant_file.csv'
+
+
+
+#file entry point
+#the function for entry of the file 
+
+
+
+
+
 
 #extracting the file path
 filePath = fp.get_excel_file_path("sample_construction_file_1.xlsx")
 
 #converting excel file to csv file
+#start here
+
 csv = converter.fileConverter(filePath)             
 
 first_row = csv.iloc[0]
@@ -34,6 +52,15 @@ first_column = csv.iloc[:, 0]
 name_in_the_file =first_column.iloc[0] 
 name_of_the_project = csv.columns[3]
 project_code = csv.columns[0]
+
+
+#creating and initiating csv resultant csv file
+resultant_file = hds.structure_addition(resultant_file, name_in_the_file)                        #the resultant file is the csv file
+with open(resultant_file, 'r', newline='') as csv_file:
+    reader = csv.reader(csv_file)
+    for row in reader:
+        print(row)
+
 
 # Generate a new CSV file name without spaces
 new_csv_file_name = nameChanger.return_Csv_File_Name(name_of_the_project, project_code)
@@ -52,10 +79,10 @@ budgetData = objectInserter.process_csv_data(new_csv_data)
 #the following adds and maps the new object created and maps it to the required file name
 budget_data_list.append(budgetData)
 file_budget_mapping[new_csv_file_name] = budgetData     
-print(budget_data_list[0].get_value(['Polytechnic Zoom Classrooms & Space Upgrades','Construction Costs','Renovation']))
+#print(budget_data_list[0].get_value(['Polytechnic Zoom Classrooms & Space Upgrades','Construction Costs','Renovation']))
 for fileName, budgetData in file_budget_mapping.items():
      print(f"File Name: {fileName}")
-     print(f"budget data {budgetData.get_value(['Polytechnic Zoom Classrooms & Space Upgrades','Construction Costs'])}")
+     print(f"budget data {budgetData.get_value(['Polytechnic Zoom Classrooms & Space Upgrades','Construction Costs','Renovation'])}")
 
 
 #print (budgetData['Polytechnic Zoom Classrooms & Space Upgrades']['Construction Costs']['Renovation'])
