@@ -11,6 +11,7 @@ import dataManagement.dataBody as dsn
 import dataManagement.dataBody
 import HelperMethods.InformationToObject as objectInserter
 import HelperMethods.header2 as hds     
+import HelperMethods.header3 as hds2
 
 # Replace {key} with your actual database connection details
 databaseConnectionString = dbs.db_url
@@ -54,12 +55,7 @@ name_of_the_project = csv.columns[3]
 project_code = csv.columns[0]
 
 
-#creating and initiating csv resultant csv file
-resultant_file = hds.structure_addition(resultant_file, name_in_the_file)                        #the resultant file is the csv file
-with open(resultant_file, 'r', newline='') as csv_file:
-    reader = csv.reader(csv_file)
-    for row in reader:
-        print(row)
+
 
 
 # Generate a new CSV file name without spaces
@@ -75,6 +71,12 @@ new_csv_data = pd.read_csv(new_csv_file_name)
 # the following object created contains the lew object of type cost 
 budgetData = objectInserter.process_csv_data(new_csv_data)   
 
+
+
+#checking the functionality of new csv generator engine
+
+resultant_file = hds2.generate_project_csv(name_of_the_project, budgetData.get_value([name_of_the_project]), project_code)
+print(f'CSV file "{resultant_file}" has been created for the project "{name_of_the_project}".')
 
 #the following adds and maps the new object created and maps it to the required file name
 budget_data_list.append(budgetData)
