@@ -102,7 +102,7 @@ new_values = ['X', 'Y', 'Z', 'W']
 # Loop through the DataFrame and set values in the fourth column one by one
 for i, value in enumerate(new_values):
     df.at[i, 'Unnamed: 3'] = value      #plugging in the values
-print(df.head())
+#print(df.head())
 
 
 
@@ -112,11 +112,31 @@ print(df.head())
 
 
 # Loop through all rows in the DataFrame
+##or fileName, budgetData in file_budget_mapping.items():
+budgetData = file_budget_mapping[new_csv_file_name]
+    
+# Create an empty list to store values for 'Unnamed: 3'
+unnamed_3_values = []
+
 for index, row in df.iterrows():
-    # Access values in each column for the current row
     column1_value = row['Land Acquisition']
     column2_value = row['Land Acquisition.1']
     column3_value = row['At Construction Budget']
+
+    print(column1_value, column2_value, column3_value)
+
+    # Calculate the value you want to set for 'Unnamed: 3' based on budgetData
+    unnamed_3_value = budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])
+    
+    # Append the calculated value to the list
+    unnamed_3_values.append(unnamed_3_value)
+
+# Assign the list of 'Unnamed: 3' values to the DataFrame
+for i, value in enumerate(unnamed_3_values):
+    df.at[i, 'Unnamed: 3'] = value      #plugging in the values
+
+# Print the first few rows of the DataFrame
+print(df.head(140))
 
     
 
