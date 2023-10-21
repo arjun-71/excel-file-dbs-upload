@@ -12,6 +12,7 @@ import dataManagement.dataBody
 import HelperMethods.InformationToObject as objectInserter
 import HelperMethods.header2 as hds     
 import HelperMethods.header3 as hds2
+import csv
 
 # Replace {key} with your actual database connection details
 databaseConnectionString = dbs.db_url
@@ -78,13 +79,79 @@ budgetData = objectInserter.process_csv_data(new_csv_data)
 resultant_file = hds2.generate_project_csv(name_of_the_project, budgetData.get_value([name_of_the_project]), project_code)
 print(f'CSV file "{resultant_file}" has been created for the project "{name_of_the_project}".')
 
+
+df = pd.read_csv(resultant_file)
+
+#print(df.head(30))
+
+fourth_column = df.iloc[:, 3] 
+print(fourth_column)
+
 #the following adds and maps the new object created and maps it to the required file name
 budget_data_list.append(budgetData)
-file_budget_mapping[new_csv_file_name] = budgetData     
+file_budget_mapping[new_csv_file_name] = budgetData
+
 #print(budget_data_list[0].get_value(['Polytechnic Zoom Classrooms & Space Upgrades','Construction Costs','Renovation']))
 for fileName, budgetData in file_budget_mapping.items():
      print(f"File Name: {fileName}")
      print(f"budget data {budgetData.get_value(['Polytechnic Zoom Classrooms & Space Upgrades','Construction Costs','Renovation'])}")
+
+# List of values to set in the fourth column
+new_values = ['X', 'Y', 'Z', 'W']
+
+# Loop through the DataFrame and set values in the fourth column one by one
+for i, value in enumerate(new_values):
+    df.at[i, 'Unnamed: 3'] = value      #plugging in the values
+#print(df.head())
+
+
+
+
+
+# Read the CSV file into a DataFrame
+
+
+# Loop through all rows in the DataFrame
+##or fileName, budgetData in file_budget_mapping.items():
+budgetData = file_budget_mapping[new_csv_file_name]
+    
+# Create an empty list to store values for 'Unnamed: 3'
+unnamed_3_values = []
+
+for index, row in df.iterrows():
+    column1_value = row['Land Acquisition']
+    column2_value = row['Land Acquisition.1']
+    column3_value = row['At Construction Budget']
+
+    print(column1_value, column2_value, column3_value)
+
+    # Calculate the value you want to set for 'Unnamed: 3' based on budgetData
+    unnamed_3_value = budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])
+    
+    # Append the calculated value to the list
+    unnamed_3_values.append(unnamed_3_value)
+
+# Assign the list of 'Unnamed: 3' values to the DataFrame
+for i, value in enumerate(unnamed_3_values):
+    df.at[i, 'Unnamed: 3'] = value      #plugging in the values
+
+# Print the first few rows of the DataFrame
+print(df.head(140))
+
+    
+
+    # Process or print the values as needed
+   #getting the corresponsding value from the budgetData
+    
+
+
+
+
+
+
+     
+     
+     
 
 
 #print (budgetData['Polytechnic Zoom Classrooms & Space Upgrades']['Construction Costs']['Renovation'])
