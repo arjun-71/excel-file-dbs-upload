@@ -13,6 +13,7 @@ import HelperMethods.InformationToObject as objectInserter
 import HelperMethods.header2 as hds     
 import HelperMethods.header3 as hds2
 import csv
+import dataManagement.csv_file_schema as csv_schema
 
 # Replace {key} with your actual database connection details
 databaseConnectionString = dbs.db_url
@@ -76,9 +77,10 @@ budgetData = objectInserter.process_csv_data(new_csv_data)
 
 #checking the functionality of new csv generator engine
 
-resultant_file = hds2.generate_project_csv(name_of_the_project, budgetData.get_value([name_of_the_project]), project_code)
-print(f'CSV file "{resultant_file}" has been created for the project "{name_of_the_project}".')
+print(csv_schema.data)
 
+resultant_file = hds2.generate_project_csv(name_of_the_project, csv_schema.data, project_code)
+print(f'CSV file "{resultant_file}" has been created for the project "{name_of_the_project}".')
 
 df = pd.read_csv(resultant_file)
 
@@ -92,20 +94,6 @@ budget_data_list.append(budgetData)
 file_budget_mapping[new_csv_file_name] = budgetData
 
 #print(budget_data_list[0].get_value(['Polytechnic Zoom Classrooms & Space Upgrades','Construction Costs','Renovation']))
-for fileName, budgetData in file_budget_mapping.items():
-     print(f"File Name: {fileName}")
-     print(f"budget data {budgetData.get_value(['Polytechnic Zoom Classrooms & Space Upgrades','Construction Costs','Renovation'])}")
-
-# List of values to set in the fourth column
-new_values = ['X', 'Y', 'Z', 'W']
-
-# Loop through the DataFrame and set values in the fourth column one by one
-for i, value in enumerate(new_values):
-    df.at[i, 'Unnamed: 3'] = value      #plugging in the values
-#print(df.head())
-
-
-
 
 
 # Read the CSV file into a DataFrame
@@ -113,7 +101,7 @@ for i, value in enumerate(new_values):
 
 # Loop through all rows in the DataFrame
 ##or fileName, budgetData in file_budget_mapping.items():
-budgetData = file_budget_mapping[new_csv_file_name]
+budgetData = file_budget_mapping[new_csv_file_name]             #name of the dictionary for csv file mapping 
     
 # Create an empty list to store values for 'Unnamed: 3'
 unnamed_3_values = []
@@ -136,7 +124,9 @@ for i, value in enumerate(unnamed_3_values):
     df.at[i, 'Unnamed: 3'] = value      #plugging in the values
 
 # Print the first few rows of the DataFrame
-print(df.head(140))
+print(df.tail())
+
+
 
     
 
