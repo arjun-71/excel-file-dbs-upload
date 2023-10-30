@@ -14,6 +14,7 @@ import HelperMethods.header2 as hds
 import HelperMethods.header3 as hds2
 import csv
 import dataManagement.csv_file_schema as csv_schema
+import os
 
 # Replace {key} with your actual database connection details
 databaseConnectionString = dbs.db_url
@@ -62,7 +63,7 @@ project_code = csv.columns[0]
 
 # Generate a new CSV file name without spaces
 new_csv_file_name = nameChanger.return_Csv_File_Name(name_of_the_project, project_code)
-print(new_csv_file_name)
+#print(new_csv_file_name)
 
 # Save the DataFrame to the new CSV file
 csv.to_csv(new_csv_file_name, index=False)
@@ -77,7 +78,7 @@ budgetData = objectInserter.process_csv_data(new_csv_data)
 
 #checking the functionality of new csv generator engine
 
-print(csv_schema.data)
+#print(csv_schema.data)
 
 resultant_file = hds2.generate_project_csv(name_of_the_project, csv_schema.data, project_code)
 print(f'CSV file "{resultant_file}" has been created for the project "{name_of_the_project}".')
@@ -87,10 +88,12 @@ df = pd.read_csv(resultant_file)
 #print(df.head(30))
 
 fourth_column = df.iloc[:, 3] 
-print(fourth_column)
+#print(fourth_column)
 
 #the following adds and maps the new object created and maps it to the required file name
 budget_data_list.append(budgetData)
+
+#the following dictionary contains the budget data schema for every csv file
 file_budget_mapping[new_csv_file_name] = budgetData
 
 #print(budget_data_list[0].get_value(['Polytechnic Zoom Classrooms & Space Upgrades','Construction Costs','Renovation']))
@@ -105,30 +108,91 @@ budgetData = file_budget_mapping[new_csv_file_name]             #name of the dic
     
 # Create an empty list to store values for 'Unnamed: 3'
 unnamed_3_values = []
+current_Budget_Total = 0
+encumbered_Total = 0
+Expensed_Total = 0
+anticipated_Total = 0
+uncommitted_Total = 0
 
-for index, row in df.iterrows():
+for index, row in df.iterrows():                #figure this out please its irritating 
     column1_value = row['Land Acquisition']
     column2_value = row['Land Acquisition.1']
     column3_value = row['At Construction Budget']
+    value = budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])
+    checker = 0
+    
+    if value is not None and value.strip() != '':
+      checker = 0
+      try:
+          decimal_value = float(value)
+          #print(decimal_value)
+      except ValueError:
+          checker = 1
+    else:
 
-    print(column1_value, column2_value, column3_value)
+      checker = 2
+    #find the value of the five column values
+    if checker == 0:
+
+
+
+    #if(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])!= None):
+      print(column1_value, column2_value, column3_value)
+      print(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value]))
+      df.at[index, 'Unnamed: 3'] = value
+
+        #value_str = budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])
+  
+
+# Check if the string is not empty and is a valid numeric value
+        #if value_str.strip() != '':
+          # integer_value = float(value_str)
+          #  current_Budget_Total+=integer_value
+       # print(budgetData.get_value([name_of_the_project, column1_value, column2_value,column3_value]))
+       
+       # current_Budget_Total+= float(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value]))
+   # if(column3_value == 'Encumbered' and budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])!= None):
+     #   encumbered_Total+= float(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value]))
+   # if(column3_value == 'Expensed' and budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])!= None):
+     #   Expensed_Total+= float(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value]))
+  #  if(column3_value == 'Anticipated Costs' and budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])!= None):
+   #     anticipated_Total+= float(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value]))
+   # if(column3_value == 'Uncommitted Budget' and budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])!= None):
+    #    uncommitted_Total+= float(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value]))
+    
+    
+    #print(column1_value, column2_value, column3_value)        
 
     # Calculate the value you want to set for 'Unnamed: 3' based on budgetData
-    unnamed_3_value = budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])
+    #unnamed_3_value = budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])
     
     # Append the calculated value to the list
-    unnamed_3_values.append(unnamed_3_value)
+    #unnamed_3_values.append(unnamed_3_value)
 
 # Assign the list of 'Unnamed: 3' values to the DataFrame
-for i, value in enumerate(unnamed_3_values):
-    df.at[i, 'Unnamed: 3'] = value      #plugging in the values
+
+   
 
 # Print the first few rows of the DataFrame
-print(df.tail())
+print(df.head(30))   
+print(resultant_file)
+
+print(uncommitted_Total)
+
+
+current_folder = os.getcwd()   
+current_folder_destination = os.path.join(current_folder,'resulting_file')
 
 
 
-    
+
+file_path = current_folder_destination + "/"+resultant_file
+
+
+# Save the DataFrame to the specified file path
+df.to_csv(file_path, index=False)  # index=False to avoid saving the index column
+
+
 
     # Process or print the values as needed
    #getting the corresponsding value from the budgetData
