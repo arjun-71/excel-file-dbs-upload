@@ -6,7 +6,6 @@ import numpy as np
 import HelperMethods.DatabaseString as dbs
 import HelperMethods.ExcelToCsv as converter
 import HelperMethods.csv_name_changer as nameChanger
-import dataManagement.hash_function
 import dataManagement.dataBody as dsn 
 import dataManagement.dataBody
 import HelperMethods.InformationToObject as objectInserter
@@ -42,12 +41,18 @@ resultant_file = 'resultant_file.csv'
 
 
 #extracting the file path
-filePath = fp.get_excel_file_path("sample_construction_file_1.xlsx")
+filePath = fp.get_excel_file_path("sample_construction_file_2.xlsx")
 
+print(filePath)
+
+
+
+ 
 #converting excel file to csv file
 #start here
 
-csv = converter.fileConverter(filePath)             
+csv = converter.fileConverter(filePath)       #this is working
+
 
 first_row = csv.iloc[0]
 first_column = csv.iloc[:, 0]
@@ -71,9 +76,14 @@ csv.to_csv(new_csv_file_name, index=False)
 # Read and print the first few rows of the new CSV file
 new_csv_data = pd.read_csv(new_csv_file_name)
 
-# the following object created contains the lew object of type cost 
-budgetData = objectInserter.process_csv_data(new_csv_data)   
+#print(new_csv_data.head())
 
+# the following object created contains the lew object of type cost 
+budgetData = objectInserter.process_csv_data(new_csv_data, name_of_the_project)  
+
+
+
+#print(budgetData.get_value(name_of_the_project))
 
 
 #checking the functionality of new csv generator engine
@@ -105,6 +115,7 @@ file_budget_mapping[new_csv_file_name] = budgetData
 # Loop through all rows in the DataFrame
 ##or fileName, budgetData in file_budget_mapping.items():
 budgetData = file_budget_mapping[new_csv_file_name]             #name of the dictionary for csv file mapping 
+print(budgetData.get_value(name_of_the_project))
     
 # Create an empty list to store values for 'Unnamed: 3'
 unnamed_3_values = []
@@ -113,33 +124,39 @@ encumbered_Total = 0
 Expensed_Total = 0
 anticipated_Total = 0
 uncommitted_Total = 0
+total = 0.0
 
 for index, row in df.iterrows():                #figure this out please its irritating 
     column1_value = row['Land Acquisition']
     column2_value = row['Land Acquisition.1']
     column3_value = row['At Construction Budget']
-    value = budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])
-    checker = 0
-    
-    if value is not None and value.strip() != '':
+
+    if column3_value == "Expensed":
+      
+      value = budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])
       checker = 0
-      try:
-          decimal_value = float(value)
-          #print(decimal_value)
-      except ValueError:
-          checker = 1
-    else:
+      
+      if value is not None and value.strip() != '':
+        checker = 0
+        try:
+            decimal_value = float(value)
+            #print(decimal_value)
+        except ValueError:
+            checker = 1
+      else:
 
-      checker = 2
-    #find the value of the five column values
-    if checker == 0:
+        checker = 2
+      #find the value of the five column values
+      if checker == 0:
+        
 
 
 
-    #if(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])!= None):
-      print(column1_value, column2_value, column3_value)
-      print(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value]))
-      df.at[index, 'Unnamed: 3'] = value
+      #if(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])!= None):
+        #print(column1_value, column2_value, column3_value)
+        #print(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value]))
+        total = total + decimal_value
+        df.at[index, 'Unnamed: 3'] = decimal_value    
 
         #value_str = budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])
   
@@ -174,10 +191,13 @@ for index, row in df.iterrows():                #figure this out please its irri
    
 
 # Print the first few rows of the DataFrame
-print(df.head(30))   
+
+print(df.head(60))   
 print(resultant_file)
 
 print(uncommitted_Total)
+
+print(total)
 
 
 current_folder = os.getcwd()   
