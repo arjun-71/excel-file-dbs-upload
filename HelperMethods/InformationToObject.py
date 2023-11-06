@@ -3,19 +3,18 @@ import numpy as np
 import HelperMethods.DatabaseString as dbs
 import HelperMethods.ExcelToCsv as converter
 import HelperMethods.csv_name_changer as nameChanger
-import dataManagement.hash_function
 import dataManagement.dataBody as dsn 
 import dataManagement.dataBody
 import HelperMethods.InformationToObject as objectInserter
 
 
-def process_csv_data(new_csv_data):
+def process_csv_data(new_csv_data, name_of_the_project):
     codekey_one = ""
     project_name = ""
     section_value = ""
     sub_section_value = ""
     project_code_value = ""
-    budgetData = dataManagement.dataBody.BudgetData()  # Initialize an empty DataFrame for budgetData
+    budgetData = dataManagement.dataBody.BudgetData(name_of_the_project)  # Initialize an empty DataFrame for budgetData
 
     for index, row in new_csv_data.iterrows():
         project_code_value = new_csv_data.columns[0]
@@ -32,5 +31,8 @@ def process_csv_data(new_csv_data):
                     sub_section_value = value
                 if column_field_value in ['Encumbered', 'Expensed', 'Anticipated Costs', 'Uncommitted Budget', 'Current Budget', 'At Construction Budget'] and sub_section_value.find("Subtotal") == -1:
                     budgetData.set_value([project_name, section_value, sub_section_value, column_field_value], value)
+                    print(project_name,section_value, sub_section_value, column_field_value)
+                    print(value)
+    
 
     return budgetData

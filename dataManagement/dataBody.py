@@ -1,8 +1,9 @@
 class BudgetData: #the following class declaration contains budget object type functionalities.
-    def __init__(self):
+    def __init__(self, name_of_the_project):
+        self.name_of_the_project = name_of_the_project 
         
         self.data = {
-           'Polytechnic Zoom Classrooms & Space Upgrades':{
+           self.name_of_the_project:{
     'Land Acquisition': {
         'Land Acquisition':{
             'At Construction Budget': '',
@@ -307,7 +308,7 @@ class BudgetData: #the following class declaration contains budget object type f
     # Using if-elif statements to mimic a switch-like block
         if input_string == 'Unnamed: 1':
                 return 'At Construction Budget'
-        elif input_string == 'Polytechnic Zoom Classrooms & Space Upgrades':
+        elif input_string == self.name_of_the_project:
                 return 'Current Budget'
         elif input_string == 'Unnamed: 5':
                 return 'Encumbered'
@@ -328,8 +329,9 @@ original_value = 'Encumbered'
 
 
 
+
 # Create an instance of the BudgetData class
-budget_data = BudgetData()
+
 
 # Accessing a specific value in the nested dictionary:
 #value = budget_data.get_value(['Polytechnic Zoom Classrooms & Space Upgrades', 'Land Acquisition', 'Land Acquisition', 'At Construction Budget'])
