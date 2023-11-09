@@ -1,19 +1,19 @@
 import csv
 import os
+import HelperMethods.final_output_file as fsn
 
-def create_csv_file(column_headings, data, file_name, output_folder='.'):
+def add_data_to_existing_csv(data):
     try:
         # Create the full file path
-        file_path = os.path.join(output_folder, file_name)
+      
 
         # Ensure the output folder exists, create it if it doesn't
-        os.makedirs(output_folder, exist_ok=True)
+       
 
-        with open(file_path, mode='w', newline='') as file:
+        with open(fsn.resulting_file, mode='a', newline='') as file:  # Use 'a' for append mode
             writer = csv.writer(file)
-            writer.writerow(column_headings)  # Write the column headings
-            writer.writerows(data)  # Write the data
+            writer.writerows(data)  # Append the data as new rows
 
-        return file_path
+        
     except Exception as e:
         return f"Error: {str(e)}"
