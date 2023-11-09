@@ -14,6 +14,7 @@ import HelperMethods.header3 as hds2
 import csv
 import dataManagement.csv_file_schema as csv_schema
 import os
+import HelperMethods.resultant_file as rsf
 
 # Replace {key} with your actual database connection details
 databaseConnectionString = dbs.db_url
@@ -41,7 +42,7 @@ resultant_file = 'resultant_file.csv'
 
 
 #extracting the file path
-filePath = fp.get_excel_file_path("sample_construction_file_2.xlsx")
+filePath = fp.get_excel_file_path("sample_construction_file_1.xlsx")
 
 print(filePath)
 
@@ -156,6 +157,7 @@ for index, row in df.iterrows():                #figure this out please its irri
         #print(column1_value, column2_value, column3_value)
         #print(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value]))
         total = total + decimal_value
+        print(column1_value+" "+column2_value+" "+column3_value)
         df.at[index, 'Unnamed: 3'] = decimal_value    
 
         #value_str = budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])
@@ -200,6 +202,10 @@ print(uncommitted_Total)
 print(total)
 
 
+#create the resultant file and add to the final output file here
+
+
+
 current_folder = os.getcwd()   
 current_folder_destination = os.path.join(current_folder,'resulting_file')
 
@@ -211,6 +217,55 @@ file_path = current_folder_destination + "/"+resultant_file
 
 # Save the DataFrame to the specified file path
 df.to_csv(file_path, index=False)  # index=False to avoid saving the index column
+
+
+#create the file
+#call the global scope file declared in the function 
+#in the function write the data
+#return the updated file back to the main file
+
+
+
+column_headings = ["Project_Name,Project_Number,Total_Expense,sumz"]
+data = [
+    [name_of_the_project, project_code, total, total]
+]
+
+# Define your column headings as separate elements in a list
+column_headings = ["Project_Name", "Project_Number", "Total_Expense", "Sum"]
+
+# Define your data with actual values
+
+
+data = [
+    [name_of_the_project, project_code, total, total]
+]
+
+file_name = "result.csv"
+
+current_folder = os.getcwd()
+current_folder_destination = os.path.join(current_folder, 'resulting_file')
+resulting_file = os.path.join(current_folder_destination, file_name)
+print(resulting_file)
+
+#file_path = current_folder_destination + "/"+"resulting_file"
+
+value = rsf.create_csv_file(column_headings, data,file_name, current_folder_destination)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
