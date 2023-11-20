@@ -47,9 +47,10 @@ resultant_file = 'resultant_file.csv'
 
 file_list = fhm.addFile(2)
 
-for i in range(0,2):
+for i in range(0,2):      
 
   filePath = fp.get_excel_file_path(file_list[i])
+  
 
 
 
@@ -123,7 +124,7 @@ for i in range(0,2):
   # Loop through all rows in the DataFrame
   ##or fileName, budgetData in file_budget_mapping.items():
   budgetData = file_budget_mapping[new_csv_file_name]             #name of the dictionary for csv file mapping 
-  print(budgetData.get_value(name_of_the_project))
+  #print(budgetData.get_value(name_of_the_project))
       
   # Create an empty list to store values for 'Unnamed: 3'
   unnamed_3_values = []
@@ -164,7 +165,7 @@ for i in range(0,2):
           #print(column1_value, column2_value, column3_value)
           #print(budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value]))
           total = total + decimal_value
-          print(column1_value+" "+column2_value+" "+column3_value)
+          #print(column1_value+" "+column2_value+" "+column3_value)
           df.at[index, 'Unnamed: 3'] = decimal_value    
 
           #value_str = budgetData.get_value([name_of_the_project, column1_value, column2_value, column3_value])
@@ -201,7 +202,7 @@ for i in range(0,2):
 
   # Print the first few rows of the DataFrame
 
-  print(df.head(60))   
+  #print(df.head(60))   
   print(resultant_file)
 
   print(uncommitted_Total)
@@ -253,11 +254,13 @@ for i in range(0,2):
   current_folder = os.getcwd()
   current_folder_destination = os.path.join(current_folder, 'resulting_file')
   resulting_file = os.path.join(current_folder_destination, file_name)
-  print(resulting_file)
+  #print(resulting_file)
 
   #file_path = current_folder_destination + "/"+"resulting_file"
 
   rsf.add_data_to_existing_csv(data)
+
+
 
 
 
