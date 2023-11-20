@@ -8,9 +8,19 @@ def get_excel_file_path(excel_filename):
     # Get the absolute path to the current working directory
     current_directory = os.getcwd()
 
+
+
+    # Specify the folder name
+    frontend_folder = "frontend"
+    uploads_folder = "uploads"
+
+    # Combine the current directory, frontend folder, and the Excel filename to get the full path
+    excel_file_path = os.path.join(current_directory, frontend_folder,uploads_folder, excel_filename)
+
     # Combine the current directory and the Excel filename to get the full path
-    excel_file_path = os.path.join(current_directory, excel_filename)
-    
+    #excel_file_path = os.path.join(current_directory, excel_filename)
+   # print("the current excel file path is")
+    #print(excel_file_path)
     return excel_file_path
 
 # Get the Excel file path using the get_excel_file_path() function
